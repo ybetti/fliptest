@@ -19,7 +19,7 @@
             width: 110%;
             height: 110%;
             max-width: 800px;
-            max-height: 400px;
+            max-height: 600px;
             margin: auto;
         }
         .page {
@@ -135,7 +135,7 @@
             });
 
             $(window).resize(function() {
-                flipbook.turn('size', $(window).width() * 0.8, $(window).height() * 0.8);
+                flipbook.turn('size', $(window).width() * 0.8, $(window).height() * 0.5);
             });
 
             if ('ontouchstart' in document.documentElement) {
