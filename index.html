@@ -8,11 +8,15 @@
     <style>
         body {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
             background-color: #f0f0f0;
             margin: 0;
+        }
+        #controls {
+            margin-bottom: 10px;
         }
         #flipbook {
             width: 100%;
@@ -22,8 +26,8 @@
             margin: auto;
         }
         .page {
-            width: 100%; /* ページの幅を100%に設定 */
-            height: auto; /* ページの高さを自動に設定 */
+            width: 100%;
+            height: auto;
             background-color: white;
             border: 1px solid #ccc;
             display: flex;
@@ -31,16 +35,15 @@
             align-items: center;
         }
         .page img {
-            width: 100%; /* 画像の幅を100%に設定 */
-            height: auto; /* 画像の高さを自動に設定 */
-            transform: rotate(270deg); /* 画像を270度回転させる */
+            width: 100%;
+            height: auto;
+            transform: rotate(270deg);
         }
         @media (max-width: 600px) {
             #flipbook {
                 width: 100%;
                 height: auto;
             }
-
             .page {
                 height: auto;
             }
@@ -48,6 +51,10 @@
     </style>
 </head>
 <body>
+    <div id="controls">
+        <button id="zoomIn">Zoom In</button>
+        <button id="zoomOut">Zoom Out</button>
+    </div>
     <div id="flipbook">
         <!-- ページ画像をここに追加します -->
         <div class="page"><img src="images/page_1.jpg" alt="Page 1"></div>
@@ -130,23 +137,22 @@
         <!-- 必要に応じてページを追加 -->
     </div>
 
-    <!-- ローカルのjQueryを読み込む -->
     <script src="js/jquery.min.1.7.js"></script>
-    <!-- ローカルのTurn.jsを読み込む -->
     <script src="js/turn.js"></script>
     <script>
         $(document).ready(function() {
+            var scale = 1;
+
             function resizeFlipbook() {
                 var viewportWidth = $(window).width();
                 var viewportHeight = $(window).height();
-                var flipbookWidth = viewportWidth * 0.9; // フリップブックの幅を90%に設定
-                var flipbookHeight = viewportHeight * 0.9; // フリップブックの高さを90%に設定
+                var flipbookWidth = viewportWidth * 0.9 * scale;
+                var flipbookHeight = viewportHeight * 0.9 * scale;
 
-                // 画面の縦横比を考慮してサイズを調整
-                if (flipbookWidth / flipbookHeight > 4/3) {
-                    flipbookWidth = flipbookHeight * 4/3;
+                if (flipbookWidth / flipbookHeight > 4 / 3) {
+                    flipbookWidth = flipbookHeight * 4 / 3;
                 } else {
-                    flipbookHeight = flipbookWidth * 3/4;
+                    flipbookHeight = flipbookWidth * 3 / 4;
                 }
 
                 $("#flipbook").turn('size', flipbookWidth, flipbookHeight);
@@ -159,6 +165,18 @@
             resizeFlipbook();
             $(window).resize(function() {
                 resizeFlipbook();
+            });
+
+            $("#zoomIn").click(function() {
+                scale += 0.1;
+                resizeFlipbook();
+            });
+
+            $("#zoomOut").click(function() {
+                if (scale > 0.1) {
+                    scale -= 0.1;
+                    resizeFlipbook();
+                }
             });
         });
     </script>
