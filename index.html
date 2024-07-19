@@ -44,9 +44,13 @@
     <script src="js/turn.js"></script>
     <script>
         $(document).ready(function() {
+            var scale = 1;
+            var minScale = 0.5;
+            var maxScale = 2;
+
             function resizeFlipbook() {
-                var viewportWidth = $(window).width();
-                var viewportHeight = $(window).height();
+                var viewportWidth = $(window).width() * scale;
+                var viewportHeight = $(window).height() * scale;
 
                 $("#flipbook").turn('size', viewportWidth, viewportHeight);
             }
@@ -60,8 +64,6 @@
                 resizeFlipbook();
             });
 
-            var scale = 1;
-
             function zoomFlipbook(event) {
                 if (event.ctrlKey) {
                     event.preventDefault();
@@ -72,13 +74,9 @@
                     }
 
                     // 制限を設定
-                    if (scale < 0.5) scale = 0.5;
-                    if (scale > 2) scale = 2;
+                    scale = Math.max(minScale, Math.min(scale, maxScale));
 
-                    var newWidth = $(window).width() * scale;
-                    var newHeight = $(window).height() * scale;
-
-                    $("#flipbook").turn('size', newWidth, newHeight);
+                    resizeFlipbook();
                 }
             }
 
